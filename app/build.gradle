@@ -2,21 +2,19 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
     useLibrary 'org.apache.http.legacy'
+    buildToolsVersion "26.0.1"
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
     defaultConfig {
         applicationId "com.example.guest.myrestaurants"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        repositories {
-            mavenCentral()
-            jcenter()
-        }
     }
     buildTypes {
         release {
@@ -36,7 +34,8 @@ dependencies {
     }
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.0'
     testCompile 'org.robolectric:shadows-support-v4:3.0'
+    testCompile 'junit:junit:4.12'
+    compile 'com.jakewharton:butterknife:7.0.1'
 }
