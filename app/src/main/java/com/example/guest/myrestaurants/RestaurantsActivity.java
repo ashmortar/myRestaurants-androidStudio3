@@ -12,8 +12,13 @@ import android.widget.Toast;
 
 import com.example.guest.myrestaurants.MyRestaurantsArrayAdapter.MyRestaurantsArrayAdapter;
 
+import java.io.IOException;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class RestaurantsActivity extends AppCompatActivity {
     @Bind(R.id.locationTextView) TextView mLocationTextView;
@@ -44,7 +49,28 @@ public class RestaurantsActivity extends AppCompatActivity {
         });
         Intent intent = getIntent();
         String location = intent.getStringExtra("location");
+        getRestaurants(location);
         mLocationTextView.setText("Here are all the restaurants near: " + location);
         Log.d(TAG, "In on the onCreate method!");
+    }
+
+    private void getRestaurants(String location) {
+        final YelpService yelpService = new YelpService();
+        yelpService.findRestaurants(location, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    String jsonData = response.body().string();
+                    Log.v(TAG, jsonData);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
