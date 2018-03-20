@@ -4,7 +4,7 @@
     <!--xmlns:tools="http://schemas.android.com/tools"-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent"-->
-    <!--tools:context="com.example.guest.myrestaurants.ui.RestaurantsActivity">-->
+    <!--tools:contecom.example.guest.myrestaurants.ui.RestaurantListActivityityvity">-->
 
     <!--<TextView-->
         <!--android:id="@+id/locationTextView"-->
@@ -31,7 +31,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context=".ui.RestaurantsActivity">
+    tools:context=".ui.RestaurantListActivity">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 package com.example.guest.myrestaurants.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +11,15 @@ import android.widget.TextView;
 
 import com.example.guest.myrestaurants.R;
 import com.example.guest.myrestaurants.models.Restaurant;
+import com.example.guest.myrestaurants.ui.RestaurantDetailActivity;
 import com.squareup.picasso.Picasso;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-/**
- * Created by Guest on 3/20/18.
- */
 
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAdapter.RestaurantViewHolder> {
     private ArrayList<Restaurant> mRestaurants = new ArrayList<>();
@@ -47,7 +47,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         return mRestaurants.size();
     }
 
-    public class RestaurantViewHolder extends RecyclerView.ViewHolder {
+    public class RestaurantViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.restaurantImageView)
         ImageView mRestaurantImageView;
         @BindView(R.id.restaurantNameTextView) TextView mNameTextView;
@@ -61,6 +61,16 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
             super(itemView);
             ButterKnife.bind(this, itemView);
             mContext = itemView.getContext();
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int itemPosition = getLayoutPosition();
+            Intent intent = new Intent(mContext, RestaurantDetailActivity.class);
+            intent.putExtra("position", itemPosition);
+            intent.putExtra("restaurants", Parcels.wrap(mRestaurants));
+            mContext.startActivity(intent);
         }
 
         public void bindRestaurant(Restaurant restaurant) {
