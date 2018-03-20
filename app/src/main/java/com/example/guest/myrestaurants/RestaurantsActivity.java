@@ -14,15 +14,15 @@ import com.example.guest.myrestaurants.MyRestaurantsArrayAdapter.MyRestaurantsAr
 
 import java.io.IOException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
 public class RestaurantsActivity extends AppCompatActivity {
-    @Bind(R.id.locationTextView) TextView mLocationTextView;
-    @Bind(R.id.listView) ListView mListView;
+    @BindView(R.id.locationTextView) TextView mLocationTextView;
+    @BindView(R.id.listView) ListView mListView;
     public static final String TAG = RestaurantsActivity.class.getSimpleName();
 
     private String[] restaurants = new String[] {"Sweet Hereafter", "Cricket", "Hawthorne Fish House", "Viking Soul Food", "Red Square", "Horse Brass", "Dick's Kitchen", "Taco Bell", "Me Kha Noodle Bar", "La Bonita Taqueria", "Smokehouse Tavern", "Pembiche", "Kay's Bar", "Gnarly Grey", "Slappy Cakes", "Mi Mero Mole" };
@@ -44,14 +44,12 @@ public class RestaurantsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String restaurant = ((TextView)view).getText().toString();
                 Toast.makeText(RestaurantsActivity.this, restaurant, Toast.LENGTH_LONG).show();
-                Log.v(TAG, "In the onItemClickListener!");
             }
         });
         Intent intent = getIntent();
         String location = intent.getStringExtra("location");
         getRestaurants(location);
         mLocationTextView.setText("Here are all the restaurants near: " + location);
-        Log.d(TAG, "In on the onCreate method!");
     }
 
     private void getRestaurants(String location) {
