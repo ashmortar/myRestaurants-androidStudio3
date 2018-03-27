@@ -13,6 +13,8 @@ import com.example.guest.myrestaurants.R;
 import com.example.guest.myrestaurants.models.Restaurant;
 import com.example.guest.myrestaurants.ui.RestaurantDetailActivity;
 import com.example.guest.myrestaurants.ui.RestaurantDetailFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +31,7 @@ public class FirebaseRestaurantViewHolder extends RecyclerView.ViewHolder implem
     private static final int MAX_HEIGHT = 200;
     View mView;
     Context mContext;
+    FirebaseUser user;
 
     public FirebaseRestaurantViewHolder(View itemView) {
         super(itemView);
@@ -56,8 +59,10 @@ public class FirebaseRestaurantViewHolder extends RecyclerView.ViewHolder implem
 
     @Override
     public void onClick(View view) {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
         final ArrayList<Restaurant> restaurants = new ArrayList<>();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_RESTAURANTS);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_RESTAURANTS).child(uid);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -68,7 +73,7 @@ public class FirebaseRestaurantViewHolder extends RecyclerView.ViewHolder implem
                 int itemPosition = getLayoutPosition();
 
                 Intent intent = new Intent(mContext, RestaurantDetailActivity.class);
-                intent.putExtra("position", itemPosition + "");
+                intent.putExtra("position", itemPosition);
                 intent.putExtra("restaurants", Parcels.wrap(restaurants));
 
                 mContext.startActivity(intent);
