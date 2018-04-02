@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.RestaurantListActivity">
+    tools:context=".ui.RestaurantListActivity"
+    >
 
     <fragment
+        android:id="@+id/fragmentRestaurantList"
+        android:name="com.example.guest.myrestaurants.ui.SavedRestaurantListFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/fragmentRestaurantList"
-        android:name="com.example.guest.myrestaurants.ui.RestaurantListFragment"
-        layout="@layout/fragment_restaurant_list"/>
+        tools:layout="@layout/fragment_restaurant_list" />
 
 </RelativeLayout>
