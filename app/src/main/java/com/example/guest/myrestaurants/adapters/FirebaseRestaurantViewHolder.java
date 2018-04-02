@@ -4,6 +4,7 @@ package com.example.guest.myrestaurants.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import com.example.guest.myrestaurants.R;
 import com.example.guest.myrestaurants.models.Restaurant;
 import com.example.guest.myrestaurants.ui.RestaurantDetailActivity;
 import com.example.guest.myrestaurants.ui.RestaurantDetailFragment;
+import com.example.guest.myrestaurants.util.ItemTouchHelperViewHolder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +28,8 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-public class FirebaseRestaurantViewHolder extends RecyclerView.ViewHolder {
+public class FirebaseRestaurantViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
+    public static final String TAG = FirebaseRestaurantViewHolder.class.getSimpleName();
     private static final int MAX_WIDTH = 200;
     private static final int MAX_HEIGHT = 200;
     View mView;
@@ -54,5 +57,17 @@ public class FirebaseRestaurantViewHolder extends RecyclerView.ViewHolder {
         nameTextView.setText(restaurant.getName());
         categoryTextView.setText(restaurant.getCategories().get(0));
         ratingTextView.setText("Rating: " + restaurant.getRating() + "/5");
+    }
+
+    @Override
+    public void onItemSelected() {
+        Log.d("Animation", "onItemSelected: ");
+        //we will add animations here
+    }
+
+    @Override
+    public void onItemClear() {
+        Log.d("Animation", "onItemClear: ");
+        //we will add animations here
     }
 }

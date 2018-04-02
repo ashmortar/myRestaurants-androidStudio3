@@ -15,7 +15,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         mAdapter = adapter;
     }
 
-    //The method below iforms the ItemTouchHelperAdapter that drag gestures area enabled.  We could also disable drag gestures by returning false
+    //The method below informs the ItemTouchHelperAdapter that drag gestures area enabled.  We could also disable drag gestures by returning false
 
     @Override
     public boolean isLongPressDragEnabled() {
@@ -54,5 +54,37 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int i) {
         mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
+    }
+
+
+    //this method triggers the callback in ItemTouchHelperViewHolder which is then sent to our RestaurantListViewHolder where we will later add animations
+
+    @Override
+    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+        // this conditional ensure we only change appearance of active items:
+        if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+            if (viewHolder instanceof  ItemTouchHelperViewHolder) {
+
+                // this tells the viewHolder that an item is being moved or dragged
+
+                ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
+                itemViewHolder.onItemSelected();
+            }
+        }
+        super.onSelectedChanged(viewHolder, actionState);
+    }
+
+    //this triggers the callback in the ITemTouchHelperViewHolder which will be sent to the RestaurantListViewHolder.  Then, in the clearView override in RestaurantListViewHolder, we will remove the animations attached to 'selected' items, since this item will no longer be actively selected
+
+    @Override
+    public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+        super.clearView(recyclerView, viewHolder);
+        if (viewHolder instanceof ItemTouchHelperViewHolder) {
+
+            //tells hte view holder to return the item back to its normal appearance:
+
+            ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
+            itemViewHolder.onItemClear();
+        }
     }
 }
