@@ -1,7 +1,9 @@
 package com.example.guest.myrestaurants.ui;
 
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -21,6 +23,7 @@ import com.example.guest.myrestaurants.R;
 import com.example.guest.myrestaurants.adapters.RestaurantListAdapter;
 import com.example.guest.myrestaurants.models.Restaurant;
 import com.example.guest.myrestaurants.services.YelpService;
+import com.example.guest.myrestaurants.util.OnRestaurantSelectedListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,18 +37,28 @@ import okhttp3.Response;
 
 public class RestaurantListFragment extends Fragment {
 
-    @BindView(R.id.recyclerView)
-    RecyclerView mRecyclerView;
+    @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
     private RestaurantListAdapter mAdapter;
     public ArrayList<Restaurant> mRestaurants = new ArrayList<>();
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
     private String mRecentAddress;
+    private OnRestaurantSelectedListener mOnRestaurantSelectedListener;
 
 
     public RestaurantListFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mOnRestaurantSelectedListener = (OnRestaurantSelectedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + e.getMessage());
+        }
     }
 
     @Override
@@ -106,7 +119,9 @@ public class RestaurantListFragment extends Fragment {
 
     private void getRestaurants(String location) {
         final YelpService yelpService = new YelpService();
+
         yelpService.findRestaurants(location, new Callback() {
+
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -119,10 +134,9 @@ public class RestaurantListFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mAdapter = new RestaurantListAdapter(getActivity(), mRestaurants);
+                        mAdapter = new RestaurantListAdapter(getActivity(), mRestaurants, mOnRestaurantSelectedListener);
                         mRecyclerView.setAdapter(mAdapter);
-                        RecyclerView.LayoutManager layoutManager =
-                                new LinearLayoutManager(getActivity());
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                         mRecyclerView.setLayoutManager(layoutManager);
                         mRecyclerView.setHasFixedSize(true);
 

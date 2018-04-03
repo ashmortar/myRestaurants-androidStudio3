@@ -25,12 +25,9 @@ import com.google.firebase.database.Query;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class SavedRestaurantListFragment extends Fragment implements OnStartDragListener {
-    @BindView(R.id.recyclerView)
-    RecyclerView mRecyclerView;
+    @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
     private FirebaseRestaurantListAdapter mFirebaseAdapter;
     private ItemTouchHelper mItemTouchHelper;
@@ -59,7 +56,9 @@ public class SavedRestaurantListFragment extends Fragment implements OnStartDrag
                 .child(uid)
                 .orderByChild(Constants.FIREBASE_QUERY_INDEX);
 
-        mFirebaseAdapter = new FirebaseRestaurantListAdapter(Restaurant.class, R.layout.restaurant_list_tem_drag, FirebaseRestaurantViewHolder.class, query, this, getActivity());
+        mFirebaseAdapter = new FirebaseRestaurantListAdapter(Restaurant.class,
+                R.layout.restaurant_list_item_drag, FirebaseRestaurantViewHolder.class,
+                query, this, getActivity());
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
